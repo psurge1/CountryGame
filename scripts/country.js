@@ -23,19 +23,30 @@ class Country {
 
     /**
      * Completes all required steps to update the country
-     * @return boolean depicting if successful or not
+     * @return {boolean} depicting if successful or not
      */
     do()
     {
         this.incrementTreasury(this.getIncome(), 'A');
     }
 
+    /**
+     * Calculates the power index of a country given its war exhaustion, factories, development, and stability
+     * @return {float} power index
+     */
     calcPower()
     {
         // use warexhaustion, stability, factories, wars, cities, population, development, and income
         let temp = (this._warExhaustion+this._factories+this._development)*this._stability;
+        let a = 0.989, b = -5;
+        this.__power = (10-Math.pow(a,temp+b))/(1+Math.pow(a,temp+b))+1;
+        return this.__power();
     }
 
+    /**
+     * Completes all required steps to update the country
+     * @return {float} war exhaustion
+     */
     calcWarExhaustion()
     {
         // use experience, wars, ideology, population, and income
@@ -54,6 +65,10 @@ class Country {
         return this._warExhaustion;
     }
 
+    /**
+     * Calculates the stability of a country on a scale of 0 to 1 where 1 is stable and 0 is unstable
+     * @return {float} stability percentage reflected as a decimal between 0 and 1
+     */
     calcStability()
     {
         // use income, population, landarea, cities, war exhaustion, and experience
@@ -72,6 +87,10 @@ class Country {
         return this._stability;
     }
 
+    /**
+     * Calculates development given treasury, population, cities, income, resources, and ideology
+     * @return {float} development index between 0 and 1
+     */
     calcDevelopment()
     {
         // use cities, population, income, treasury, ideology, and resources
@@ -94,7 +113,11 @@ class Country {
         this._development = -(1-Math.pow(this._constant, temp))/(1+Math.pow(this._constant, temp));
         return this._development;
     }
-
+    
+    /**
+     * Calculates the number of factories in a country given population, cities, income treasury, ideology, and resources
+     * @return {int} the number of factories in the country
+     */
     calcFactories()
     {
         // use cities, population, income, treasury,ideology, and resources
@@ -129,7 +152,7 @@ class Country {
     /**
      * 
      * @param {int} factor 
-     * @param {int} key 
+     * @param {string} key 
      */
     incrementPopulation(factor, key)
     {
@@ -145,7 +168,10 @@ class Country {
     {
         return this.properties.experience;
     }
-
+/**
+     * 
+     * @param {string} name
+     */
     setName(name)
     {
         this.properties.name = name;
@@ -156,11 +182,20 @@ class Country {
         return this.properties.name;
     }
 
+    /**
+     * 
+     * @param {int} population
+     */
     setPopulation(population)
     {
         this.properties.population = population;
     }
 
+    /**
+     * 
+     * @param {int} factor 
+     * @param {string} key 
+     */
     incrementPopulation(factor, key)
     {
         if (key=='A')
@@ -176,11 +211,20 @@ class Country {
         return this.properties.population;
     }
 
+    /**
+     * 
+     * @param {float} treasury
+     */
     setTreasury(treasury)
     {
         this.properties.treasury = treasury;
     }
 
+    /**
+     * 
+     * @param {float} factor 
+     * @param {string} key 
+     */
     incrementTreasury(factor, key)
     {
         if (key=='A')
@@ -196,11 +240,20 @@ class Country {
         return this.properties.treasury;
     }
 
+    /**
+     * 
+     * @param {int} cities
+     */
     setCities(cities)
     {
         this.properties.cities = cities;
     }
 
+    /**
+     * 
+     * @param {int} factor 
+     * @param {string} key 
+     */
     incrementCities(factor, key)
     {
         if (key=='A')
@@ -216,12 +269,21 @@ class Country {
         return this.properties.cities;
     }
 
+    /**
+     * 
+     * @param {float} income
+     */
     setIncome(income)
     {
         this.properties.income = income;
     }
 
-    incrementTreasury(factor, key)
+    /**
+     * 
+     * @param {float} factor 
+     * @param {string} key 
+     */
+    incrementIncome(factor, key)
     {
         if (key=='A')
             this.setIncome(this.getIncome()+factor);
@@ -236,11 +298,20 @@ class Country {
         return this.properties.income;
     }
 
+    /**
+     * 
+     * @param {int} wars
+     */
     setWars(wars)
     {
         this.properties.wars = wars;
     }
 
+    /**
+     * 
+     * @param {int} factor 
+     * @param {string} key 
+     */
     incrementWars(factor, key)
     {
         if (key=='A')
@@ -256,6 +327,10 @@ class Country {
         return this.properties.wars;
     }
 
+    /**
+     * 
+     * @param {string} ideologyCode
+     */
     setIdeology(ideologyCode)
     {
         switch(ideologyCode)
@@ -272,6 +347,10 @@ class Country {
         return this.properties.ideology;
     }
 
+    /**
+     * 
+     * @param {int} resources
+     */
     setResources(resources)
     {
         this.properties.resources = resources;
